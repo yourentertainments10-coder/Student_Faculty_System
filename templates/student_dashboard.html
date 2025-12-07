@@ -4,11 +4,25 @@
     <title>Student Dashboard</title>
 </head>
 <body>
-    <h2>Welcome Student</h2>
-    <ul>
-        <li><a href="{{ url_for('student_assignments') }}">View Assignments</a></li>
-        <li><a href="{{ url_for('student_attendance') }}">View Attendance</a></li>
-        <li><a href="{{ url_for('logout') }}">Logout</a></li>
-    </ul>
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome Student</h2>
+<p>Track your assignments and attendance here.</p>
+<div class="dashboard-grid">
+    <div class="dashboard-card action-card">
+        <h3>📚 View Assignments</h3>
+        <p>Check your assignments and submissions</p>
+        <a class="dashboard-link" href="{{ url_for('student_assignments') }}">Go to Page</a>
+    </div>
+    <div class="dashboard-card action-card">
+        <h3>📊 View Attendance</h3>
+        <p>Check your attendance status</p>
+        <a class="dashboard-link" href="{{ url_for('student_attendance') }}">Go to Page</a>
+    </div>
+</div>
+<div style="text-align: center; margin-top: 40px;">
+    <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+</div>
+{% endblock %}
 </body>
 </html>

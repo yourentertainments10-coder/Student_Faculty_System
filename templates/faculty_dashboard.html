@@ -1,9 +1,30 @@
-<h2>Welcome, {{ user['username'] }} (Faculty)</h2>
+{% extends "base.html" %}
+{% block content %}
+<h2>Welcome, {{ user.username }} (Faculty)</h2>
 <p>Here you can manage assignments and attendance.</p>
-<ul>
-	<li><a href="{{ url_for('add_assignment') }}">Add Assignment</a></li>
-	<li><a href="{{ url_for('mark_attendance') }}">Mark Attendance</a></li>
-	<li><a href="{{ url_for('student_assignments') }}">View Assignments</a></li>
-	<li><a href="{{ url_for('mark_attendance') }}">View Attendance</a></li>
-	<li><a href="{{ url_for('logout') }}">Logout</a></li>
-</ul>
+<div class="dashboard-grid">
+    <div class="dashboard-card action-card">
+        <h3>📝 Add Assignment</h3>
+        <p>Create new assignments for students</p>
+        <a class="dashboard-link" href="{{ url_for('add_assignment') }}">Go to Page</a>
+    </div>
+    <div class="dashboard-card action-card">
+        <h3>✓ Mark Attendance</h3>
+        <p>Mark student attendance records</p>
+        <a class="dashboard-link" href="{{ url_for('mark_attendance') }}">Go to Page</a>
+    </div>
+    <div class="dashboard-card action-card">
+        <h3>📋 View Assignments</h3>
+        <p>View all assignments created</p>
+        <a class="dashboard-link" href="{{ url_for('student_assignments') }}">Go to Page</a>
+    </div>
+    <div class="dashboard-card action-card">
+        <h3>📊 View Attendance</h3>
+        <p>View attendance history</p>
+        <a class="dashboard-link" href="{{ url_for('mark_attendance') }}">Go to Page</a>
+    </div>
+</div>
+<div style="text-align: center; margin-top: 40px;">
+    <a class="logout-btn" href="{{ url_for('logout') }}">Logout</a>
+</div>
+{% endblock %}
