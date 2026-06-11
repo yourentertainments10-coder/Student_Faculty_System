@@ -1,42 +1,57 @@
-# Student Faculty System (Flask + SQLite)
+# Student Faculty Management System (Flask + SQLite)
 
-A simple Student–Faculty management system built using **Flask** and **SQLAlchemy**.
+A web-based Student Faculty Management System built using Flask and SQLAlchemy that provides role-based access for students and faculty. The system allows faculty members to manage assignments and attendance, while students can view their academic records through dedicated dashboards.
 
 ## Features
 
-- **User authentication** (Signup/Login)
-  - Users can register as either **student** or **faculty**
-  - Passwords are stored as **hashed** values
-- **Role-based dashboards**
-  - **Faculty dashboard**
-    - Add assignments
-    - Mark attendance for all students
-  - **Student dashboard**
-    - View assignments
-    - View personal attendance records
-- **Admin routes (templates exist)**
-  - Admin pages are present as templates and backend query functions in the code:
-    - View students
-    - View faculty
-    - View assignments
-    - View attendance
-    - Admin dashboard summary counts
+### User Authentication
+
+* Secure Signup and Login System
+* Password Hashing using Werkzeug
+* Session-Based Authentication
+* Role-Based Access Control
+
+### Faculty Module
+
+* Faculty Dashboard
+* Add Assignments
+* Manage Student Attendance
+* View Academic Records
+
+### Student Module
+
+* Student Dashboard
+* View Assignments
+* View Personal Attendance Records
+* Access Academic Information
+
+### Admin Module
+
+* View Students
+* View Faculty Members
+* View Assignments
+* View Attendance Records
+* Dashboard Summary Statistics
 
 ## Technology Stack
 
-- Flask
-- Flask-SQLAlchemy
-- SQLite (database file: `college.db`)
-- Jinja2 templates
-- CSS for UI styling
+* Python
+* Flask
+* Flask-SQLAlchemy
+* SQLite
+* HTML
+* CSS
+* Jinja2 Templates
 
 ## Project Structure
 
 ```text
 .
 ├── ap.py
+│
 ├── static/
 │   └── style.css
+│
 ├── templates/
 │   ├── base.html
 │   ├── login.html
@@ -59,113 +74,164 @@ A simple Student–Faculty management system built using **Flask** and **SQLAlch
 
 ## How It Works
 
-### 1) Authentication
-- **Signup**: `POST /signup`
-  - Stores a new user with:
-    - `username`
-    - `password` (hashed)
-    - `role` (`student` or `faculty`)
-- **Login**: `POST /login`
-  - Validates username/password
-  - Saves `user_id` and `role` into Flask `session`
-  - Redirects:
-    - `faculty` -> `/faculty`
-    - `student` -> `/student`
+### 1) User Authentication
 
-### 2) Faculty
-- **Faculty dashboard**: `GET /faculty`
-- **Add assignment**: `GET/POST /faculty/add-assignment`
-  - Creates an `Assignment` linked to the logged-in faculty user.
-- **Mark attendance**: `GET/POST /faculty/mark-attendance`
-  - Faculty selects a date and sets Present/Absent for every student.
-  - Attendance records are created for all students.
+* Users register as either Student or Faculty.
+* Passwords are securely hashed before storage.
+* Login credentials are validated.
+* Role-based access is provided after successful authentication.
 
-### 3) Student
-- **Student dashboard**: `GET /student`
-- **View assignments**: `GET /student/assignments`
-  - Displays all assignments.
-- **View attendance**: `GET /student/attendance`
-  - Displays attendance records for the logged-in student.
+### 2) Faculty Management
 
-### 4) Admin (Templates + query routes exist)
-Routes implemented in `ap.py` include:
-- `/admin/students`
-- `/admin/faculty`
-- `/admin/assignments`
-- `/admin/attendance`
-- `/admin`
+Faculty members can:
 
-> Note: Admin UI/access control is not shown in the provided session logic; these routes are defined primarily to render the templates.
+* Create and manage assignments
+* Mark attendance for students
+* Access faculty dashboard
+* Monitor academic activities
+
+### 3) Student Portal
+
+Students can:
+
+* View assigned coursework
+* Check attendance records
+* Access student dashboard
+* Track academic progress
+
+### 4) Administration
+
+Administrators can:
+
+* Manage students and faculty records
+* View attendance information
+* Monitor assignments
+* Access system-wide statistics
 
 ## Database
 
-The app uses **SQLite** with this configuration:
+The application uses SQLite as the primary database.
 
-- `SQLALCHEMY_DATABASE_URI = 'sqlite:///college.db'`
+### Models
 
-### Models (from `ap.py`)
-- `User`
-  - `id`, `username` (unique), `password` (hashed), `role` (`student` / `faculty`)
-- `Assignment`
-  - `id`, `title`, `description`, `faculty_id` -> `User.id`
-- `Attendance`
-  - `id`, `student_id` -> `User.id`, `date`, `status` (`Present`/`Absent`), `faculty_id` -> `User.id`
+#### User
 
-On startup (within app context):
-- `db.create_all()` is called to create tables automatically.
+Stores:
 
-### SQL File (`database/db.sql`)
-A MySQL-style schema is included in `database/db.sql` (shown in the repo).
-The running app itself uses SQLite via SQLAlchemy.
+* User ID
+* Username
+* Password (Hashed)
+* Role (Student / Faculty)
+
+#### Assignment
+
+Stores:
+
+* Assignment Title
+* Description
+* Faculty Information
+
+#### Attendance
+
+Stores:
+
+* Student Information
+* Attendance Date
+* Attendance Status
+* Faculty Information
 
 ## Setup & Run
 
-### 1) Create a Python virtual environment
+### 1) Create Virtual Environment
 
 ```bash
 python -m venv venv
 venv\Scripts\activate
 ```
 
-### 2) Install dependencies
+### 2) Install Dependencies
 
 ```bash
 pip install flask flask_sqlalchemy werkzeug
 ```
 
-### 3) Start the app
+### 3) Run the Application
 
 ```bash
 python ap.py
 ```
 
-Open the displayed local URL (typically):
+### 4) Open in Browser
 
-- `http://127.0.0.1:5000`
+```text
+http://127.0.0.1:5000
+```
 
-## Default Pages / Routes
+## Available Routes
 
-- `/` -> redirects to `/login`
-- `/login` -> login page
-- `/signup` -> signup page
-- `/faculty` -> faculty dashboard
-- `/faculty/add-assignment`
-- `/faculty/mark-attendance`
-- `/student` -> student dashboard
-- `/student/assignments`
-- `/student/attendance`
-- `/logout` -> clears session
+### Authentication
 
-## Notes / Important Implementation Details
+* `/login`
+* `/signup`
+* `/logout`
 
-- The Flask app uses a hardcoded `secret_key = "secret123"`.
-  - Replace it with an environment variable for production.
-- Debug mode is enabled:
-  - `app.run(debug=True)`
-- Attendance is stored per student with:
-  - `date` and `status` (Present/Absent)
+### Faculty
 
-## License
+* `/faculty`
+* `/faculty/add-assignment`
+* `/faculty/mark-attendance`
 
-Add your license information here (MIT/Apache/etc.) if required.
+### Student
+
+* `/student`
+* `/student/assignments`
+* `/student/attendance`
+
+### Admin
+
+* `/admin`
+* `/admin/students`
+* `/admin/faculty`
+* `/admin/assignments`
+* `/admin/attendance`
+
+## Screenshots
+
+### Login Page
+
+![Login](screenshots/login.png)
+
+### Faculty Dashboard
+
+![Faculty Dashboard](screenshots/faculty-dashboard.png)
+
+### Student Dashboard
+
+![Student Dashboard](screenshots/student-dashboard.png)
+
+### Attendance Management
+
+![Attendance](screenshots/attendance.png)
+
+## Security Notes
+
+* Passwords are stored as hashed values.
+* Session management is implemented using Flask sessions.
+* Replace the default secret key before production deployment.
+* Disable debug mode in production environments.
+
+## Future Improvements
+
+* Email Notifications
+* Role-Based Admin Authentication
+* Assignment Submission Module
+* Attendance Analytics
+* Student Performance Tracking
+* MySQL Integration
+
+## Author
+
+**Anuj Srivastava**
+
+Aspiring Full-Stack Developer | Python | Flask | SQL | Web Development
 
